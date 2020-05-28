@@ -1,0 +1,68 @@
+#:kivy 1.11.1
+
+<HomePage>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        MDToolbar:
+            id: toolbar
+            title: 'Kotak Decontaminasi'
+            specific_text_color: 1, 0.66, 0, 1
+            md_bg_color: 0.13, 0.14, 0.26, 1
+            elevation: 10
+            right_action_items: [["dots-vertical", lambda x: app.callback()]]
+
+        BoxLayout:
+            orientation: 'horizontal'
+            canvas.before:
+                Color:
+                    rgba: 0.22, 0.235, 0.439, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint: 0.07, 1
+                padding: 0, 0, 14, 0
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    md_bg_color: 0.18, 0.19, 0.35, 1
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'bottom'
+                        padding: 8, 8
+                        MDIconButton:
+                            icon: "assets/img/onoffbutton.png"
+                            increment_width: "60dp"
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint: 0.58, 1
+
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    size_hint: 1, 0.5
+                    padding: 0, 16, 9, 8
+                    MDCard:
+                        MDBoxLayout:
+                            md_bg_color: 0.18, 0.19, 0.35, 1
+
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    size_hint: 1, 0.5
+                    padding: 0, 8, 9, 8
+                    MDCard:
+                        MDBoxLayout:
+                            md_bg_color: 0.18, 0.19, 0.35, 1
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint: 0.35, 1
+                padding: 8, 16, 16, 8
+                MDCard:
+                    MDBoxLayout:
+                        md_bg_color: 0.18, 0.19, 0.35, 1
