@@ -1,34 +1,98 @@
 #:kivy 1.11.1
+#:import utils kivy.utils
+#:import simple shapes.simple_tank.info
+
+<CroppedImage>
+    canvas.before:
+        StencilPush
+        Rectangle:
+            pos: self.rectangle_pos
+            size: self.rectangle_size
+        StencilUse
+    
+    canvas.after:
+        StencilUnUse
+        Rectangle:
+            pos: self.rectangle_pos
+            size: self.rectangle_size
+        StencilPop
+<ImageProgressBar>
+    Image:
+        id: background_progress_image
+        source: root.source_progress if root.draw_progress_background else None
+        color : root.color_progress_background if root.draw_progress_background else [0,0,0,0]
+        pos: root.pos
+        size: root.size
+        allow_stretch: True
+    CroppedImage:
+        id: progress_image
+        source: root.source_progress
+        color: root.color_progress
+        pos: root.pos
+        size: root.size
+        allow_stretch: True
+    Image:
+        id: front_image
+        color: root.color_front
+        source: root.source_front
+        pos: root.pos
+        size: root.size
+        allow_stretch: True 
+    Label:
+        id: text_lbl
+        pos: root.pos
+        size: root.size
+        bold: True
+        font_size: 24        
 
 <HomePage>:
     BoxLayout:
         orientation: 'vertical'
 
-        MDToolbar:
-            id: toolbar
-            title: 'Kotak Decontaminasi'
-            specific_text_color: 1, 0.66, 0, 1
-            md_bg_color: 0.13, 0.14, 0.26, 1
-            elevation: 10
-            right_action_items: [["dots-vertical", lambda x: app.callback()]]
+        #Navbar
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.02
+            md_bg_color: utils.get_color_from_hex('#25262F')
 
+            MDLabel:
+                text: '10:30:25  12-5-2020'
+                color: 1, 1, 1, 1
+                font_style: 'Caption'
+                halign: 'center'
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, 0.1
+            md_bg_color: utils.get_color_from_hex('#202342') 
+            padding: 12,12,12,12
+
+            MDLabel:
+                text: 'Kotak Dekontaminasi'
+                color: utils.get_color_from_hex('#FFA800') 
+                bold: True
+                font_style: 'H5'
+        #End of Navbar
+
+        #Container
         BoxLayout:
             orientation: 'horizontal'
             canvas.before:
                 Color:
-                    rgba: 0.22, 0.235, 0.439, 1
+                    rgb: utils.get_color_from_hex('#383C70')
                 Rectangle:
                     pos: self.pos
                     size: self.size
 
+            #Sidebar
             MDBoxLayout:
                 orientation: 'vertical'
                 size_hint: 0.07, 1
-                padding: 0, 0, 14, 0
+                padding: 0, 0, 12, 0
 
                 MDBoxLayout:
                     orientation: 'vertical'
-                    md_bg_color: 0.18, 0.19, 0.35, 1
+                    md_bg_color: utils.get_color_from_hex('#2E315A')
                     AnchorLayout:
                         anchor_x: 'center'
                         anchor_y: 'bottom'
@@ -36,33 +100,535 @@
                         MDIconButton:
                             icon: "assets/img/onoffbutton.png"
                             increment_width: "60dp"
+            #End of Sidebar
 
-            MDBoxLayout:
+            BoxLayout:
                 orientation: 'vertical'
                 size_hint: 0.58, 1
 
-                AnchorLayout:
-                    anchor_x: 'center'
-                    anchor_y: 'center'
-                    size_hint: 1, 0.5
-                    padding: 0, 16, 9, 8
-                    MDCard:
-                        MDBoxLayout:
-                            md_bg_color: 0.18, 0.19, 0.35, 1
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint: 1, 0.4
+                    padding: 0, 12, 6, 6
+
+                    #Room Information
+                    BoxLayout:
+                        orientation: 'vertical'
+                        canvas:
+                            Color:
+                                rgb: utils.get_color_from_hex('#2E315A') 
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [10]
+
+                        AnchorLayout:
+                            anchor_x: 'right'
+                            anchor_y: 'center'
+                            size_hint: 1, 0.2
+                            padding: 18, 18
+                            MDLabel:
+                                text: 'Ketersediaan Ruangan:'
+                                color: utils.get_color_from_hex('#FFFFFF') 
+                                bold: True
+                                font_style: 'H6'
+
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            padding: 12, 32, 12, 32
+                            
+                            #Dirty Room
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 6, 2, 6, 2
+
+                                #Outside
+                                BoxLayout:
+                                    orientation: 'vertical'
+                                    canvas:
+                                        Color:
+                                            rgba: 0.40, 0.82, 0.75, 1
+                                        RoundedRectangle:
+                                            pos: self.pos
+                                            size: self.size
+                                            radius: [(10,10), (10,10), (10,10), (10,10)]
+                                
+                                    BoxLayout:
+                                        orientation: 'vertical'
+                                        size_hint: 1, 0.2
+
+                                    #Inside
+                                    BoxLayout:
+                                        orientation: 'vertical'
+                                        size_hint: 1, 0.8
+                                        canvas.before:
+                                            Color:
+                                                rgba: 0.22, 0.24, 0.45, 1
+                                            RoundedRectangle:
+                                                pos: self.pos
+                                                size: self.size
+                                                radius: [(0,0), (0,0), (10,10), (10,10)]
+
+                                        BoxLayout:
+                                            orientation: 'vertical'
+                                            padding: 12, 2, 12, 2
+                                            canvas:
+                                                Color:
+                                                    rgb: utils.get_color_from_hex('#FFFFFF')
+                                                RoundedRectangle:
+                                                    pos: self.center_x - 50, self.center_y - 35
+                                                    size: 100, 90
+                                                    radius: [(0,0), (0,0), (10,10), (10,10)]
+                                                    source: "assets/img/Subtract.png"
+
+                                            MDLabel:
+                                                text: 'Ruang Kotor'
+                                                color: 1, 1, 1, 1
+                                                font_style: 'H6'
+                                                halign: 'center'
+
+                                            MDLabel:
+                                                text: 'Kosong'
+                                                color: 0.4, 0.82, 0.75, 1
+                                                font_style: 'Subtitle1'
+                                                bold: True
+                                                halign: 'center'
+                            #End of Dirty Room
+                            
+                            #Shower Room
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 6, 2, 6, 2
+
+                                #Outside
+                                BoxLayout:
+                                    orientation: 'vertical'
+                                    canvas:
+                                        Color:
+                                            rgba: 0.40, 0.82, 0.75, 1
+                                        RoundedRectangle:
+                                            pos: self.pos
+                                            size: self.size
+                                            radius: [(10,10), (10,10), (10,10), (10,10)]
+                                
+                                    BoxLayout:
+                                        orientation: 'vertical'
+                                        size_hint: 1, 0.2
+
+                                    #Inside
+                                    BoxLayout:
+                                        orientation: 'vertical'
+                                        size_hint: 1, 0.8
+                                        canvas.before:
+                                            Color:
+                                                rgba: 0.22, 0.24, 0.45, 1
+                                            RoundedRectangle:
+                                                pos: self.pos
+                                                size: self.size
+                                                radius: [(0,0), (0,0), (10,10), (10,10)]
+
+                                        BoxLayout:
+                                            orientation: 'vertical'
+                                            padding: 12, 2, 12, 2
+                                            canvas:
+                                                Color:
+                                                    rgb: utils.get_color_from_hex('#FFFFFF')
+                                                RoundedRectangle:
+                                                    pos: self.center_x - 40, self.center_y - 40
+                                                    size: 80, 100
+                                                    radius: [(0,0), (0,0), (10,10), (10,10)]
+                                                    source: "assets/img/Shower Icon.png"
+
+                                            MDLabel:
+                                                text: 'Ruang Shower'
+                                                color: 1, 1, 1, 1
+                                                font_style: 'H6'
+                                                halign: 'center'
+
+                                            MDLabel:
+                                                text: 'Kosong'
+                                                color: 0.4, 0.82, 0.75, 1
+                                                font_style: 'Subtitle1'
+                                                bold: True
+                                                halign: 'center'
+                            #End of Shower Room
+                            
+                            #Clean Room
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 6, 2, 6, 2
+
+                                #Outside
+                                BoxLayout:
+                                    orientation: 'vertical'
+                                    canvas:
+                                        Color:
+                                            rgba: 0.40, 0.82, 0.75, 1
+                                        RoundedRectangle:
+                                            pos: self.pos
+                                            size: self.size
+                                            radius: [(10,10), (10,10), (10,10), (10,10)]
+                                
+                                    BoxLayout:
+                                        orientation: 'vertical'
+                                        size_hint: 1, 0.2
+
+                                    #Inside
+                                    BoxLayout:
+                                        orientation: 'vertical'
+                                        size_hint: 1, 0.8
+                                        canvas.before:
+                                            Color:
+                                                rgba: 0.22, 0.24, 0.45, 1
+                                            RoundedRectangle:
+                                                pos: self.pos
+                                                size: self.size
+                                                radius: [(0,0), (0,0), (10,10), (10,10)]
+
+                                        BoxLayout:
+                                            orientation: 'vertical'
+                                            padding: 12, 2, 12, 2
+                                            canvas:
+                                                Color:
+                                                    rgb: utils.get_color_from_hex('#FFFFFF')
+                                                RoundedRectangle:
+                                                    pos: self.center_x - 40, self.center_y - 40
+                                                    size: 80, 100
+                                                    radius: [(0,0), (0,0), (10,10), (10,10)]
+                                                    source: "assets/img/CleanIcon.png"
+
+                                            MDLabel:
+                                                text: 'Ruang Bersih'
+                                                color: 1, 1, 1, 1
+                                                font_style: 'H6'
+                                                halign: 'center'
+
+                                            MDLabel:
+                                                text: 'Kosong'
+                                                color: 0.4, 0.82, 0.75, 1
+                                                font_style: 'Subtitle1'
+                                                bold: True
+                                                halign: 'center'
+                            #End of Clean Room
+
+                    #End of Room Information
 
                 AnchorLayout:
                     anchor_x: 'center'
                     anchor_y: 'center'
-                    size_hint: 1, 0.5
-                    padding: 0, 8, 9, 8
-                    MDCard:
-                        MDBoxLayout:
-                            md_bg_color: 0.18, 0.19, 0.35, 1
+                    size_hint: 1, 0.6
+                    padding: 0, 6, 6, 12
 
+                    #Resource Information
+                    BoxLayout:
+                        orientation: 'vertical'
+                        canvas:
+                            Color:
+                                rgb: utils.get_color_from_hex('#2E315A') 
+                            RoundedRectangle:
+                                pos: self.pos
+                                size: self.size
+                                radius: [10]
+
+                        BoxLayout:
+                            orientation:'horizontal'
+                            spacing: 12
+                            padding: 48, 12, 48, 12
+                            #ColdWater Bar
+                            BoxLayout:
+                                orientation: 'vertical'
+
+                                BoxLayout:
+                                    size_hint: 1, 0.2
+                                    padding: 12, 12
+                                    canvas.before:
+                                        # Color:
+                                        #     rgba: 1, 0, 0, 1
+                                        # Rectangle:
+                                        #     pos: self.pos
+                                        #     size: self.size
+
+                                    Image:
+                                        size: 12, 12
+                                        source: 'assets/img/coldwateric.png'
+                                
+                                BoxLayout:
+                                    orientation: 'vertical'
+                                    size_hint: 1, 0.6
+                                    padding: 24, 0
+                                    canvas.before:
+                                        # Color:
+                                        #     rgba: 1, 1, 1, 1
+                                        # Rectangle:
+                                        #     pos: self.pos
+                                        #     size: self.size
+                                    ImageProgressBar:
+                                        source_front: 'assets/progressbar/simple_tank/front.png'
+                                        source_progress: 'assets/progressbar/simple_tank/back.png'
+                                        color_progress: 0.31, 0.482, 1, 1
+                                        color_progress_background: 0.216, 0.243, 0.447, 1
+                                        value: 70
+                                        min_pos: simple.start
+                                        max_length: simple.length
+                                        direction: 'bt'
+
+                                MDLabel:
+                                    size_hint: 1, 0.2
+                                    text: 'Air Dingin'
+                                    color: utils.get_color_from_hex('#FFFFFF') 
+                                    bold: True
+                                    font_style: 'H6'
+                                    halign: 'center'
+
+                            #HotWater Bar
+                            BoxLayout:
+                                orientation: 'vertical'
+
+                                BoxLayout:
+                                    size_hint: 1, 0.2
+                                    padding: 12, 12
+                                    canvas.before:
+                                        # Color:
+                                        #     rgba: 1, 0, 0, 1
+                                        # Rectangle:
+                                        #     pos: self.pos
+                                        #     size: self.size
+
+                                    Image:
+                                        size: 12, 12
+                                        source: 'assets/img/hotwateric.png'
+                                
+                                BoxLayout:
+                                    orientation: 'vertical'
+                                    size_hint: 1, 0.6
+                                    padding: 24, 0
+                                    canvas.before:
+                                        # Color:
+                                        #     rgba: 1, 1, 1, 1
+                                        # Rectangle:
+                                        #     pos: self.pos
+                                        #     size: self.size
+                                    ImageProgressBar:
+                                        source_front: 'assets/progressbar/simple_tank/front.png'
+                                        source_progress: 'assets/progressbar/simple_tank/back.png'
+                                        color_progress: 0.97, 0.32, 0.4, 1
+                                        color_progress_background: 0.216, 0.243, 0.447, 1
+                                        value: 70
+                                        min_pos: simple.start
+                                        max_length: simple.length
+                                        direction: 'bt'
+
+                                MDLabel:
+                                    size_hint: 1, 0.2
+                                    text: 'Air Panas'
+                                    color: utils.get_color_from_hex('#FFFFFF') 
+                                    bold: True
+                                    font_style: 'H6'
+                                    halign: 'center'
+
+                            #Fuel Bar
+                            BoxLayout:
+                                orientation: 'vertical'
+
+                                BoxLayout:
+                                    size_hint: 1, 0.2
+                                    padding: 12, 12
+                                    canvas.before:
+                                        # Color:
+                                        #     rgba: 1, 0, 0, 1
+                                        # Rectangle:
+                                        #     pos: self.pos
+                                        #     size: self.size
+
+                                    Image:
+                                        size: 12, 12
+                                        source: 'assets/img/fuelicon.png'
+                                
+                                BoxLayout:
+                                    orientation: 'vertical'
+                                    size_hint: 1, 0.6
+                                    padding: 24, 0
+                                    canvas.before:
+                                        # Color:
+                                        #     rgba: 1, 1, 1, 1
+                                        # Rectangle:
+                                        #     pos: self.pos
+                                        #     size: self.size
+                                    ImageProgressBar:
+                                        source_front: 'assets/progressbar/simple_tank/front.png'
+                                        source_progress: 'assets/progressbar/simple_tank/back.png'
+                                        color_progress: 0.92, 0.49, 0.19, 1
+                                        color_progress_background: 0.216, 0.243, 0.447, 1
+                                        value: 70
+                                        min_pos: simple.start
+                                        max_length: simple.length
+                                        direction: 'bt'
+
+                                MDLabel:
+                                    size_hint: 1, 0.2
+                                    text: 'Bahan Bakar'
+                                    color: utils.get_color_from_hex('#FFFFFF') 
+                                    bold: True
+                                    font_style: 'H6'
+                                    halign: 'center'
+
+                    #End of Resource Information
+
+            #Room State Information
             MDBoxLayout:
                 orientation: 'vertical'
                 size_hint: 0.35, 1
-                padding: 8, 16, 16, 8
-                MDCard:
-                    MDBoxLayout:
-                        md_bg_color: 0.18, 0.19, 0.35, 1
+                padding: 6, 12, 12, 12
+                BoxLayout:
+                    orientation: 'vertical'
+                    padding: 8, 8
+                    spacing: 24
+                    canvas:
+                        Color:
+                            rgb: utils.get_color_from_hex('#2E315A') 
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [10]
+
+                    MDLabel:
+                        text: 'Informasi Keadaan Ruangan:'
+                        color: utils.get_color_from_hex('#FFFFFF') 
+                        bold: True
+                        size_hint: 1, 0.1
+                        font_style: 'H6'
+                        halign: 'center'
+                        
+                    #Upper Section    
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, 0.3
+
+                        #Flow Rate
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size_hint: 1, 0.4
+                            padding: 12, 12, 12, 12
+                            spacing: 12
+
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                MDLabel:
+                                    text: 'Flow Rate'
+                                    color: utils.get_color_from_hex('#FFFFFF') 
+                                    size_hint: 0.6, 0.5
+                                    font_style: 'Subtitle1'
+                                    halign: 'left'
+
+                                MDLabel:
+                                    text: '1 L/m'
+                                    color: utils.get_color_from_hex('#FFFFFF') 
+                                    size_hint: 0.4, 0.5
+                                    font_style: 'Subtitle1'
+                                    halign: 'right'
+
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint: 1, 0.5
+                                MDLabel:
+                                    text: '(Liter per menit)'
+                                    color: utils.get_color_from_hex('#FFFFFF') 
+                                    font_style: 'Caption'
+                                    halign: 'right'
+
+                        #Space for additional features
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: 1, 0.9
+
+                    #Line
+                    FitImage:
+                        size_hint: 1, 0.01
+                        source: 'assets/img/line.png'
+                    
+                    #Lower Section
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1, 0.44
+                        padding: 12, 12, 12, 12
+                        spacing: 12
+
+                        AnchorLayout:
+                            anchor_x: 'left'
+                            anchor_y: 'top'
+                            size_hint: 1, 0.2
+                            MDLabel:
+                                text: 'Ruang Sterilisasi:'
+                                color: utils.get_color_from_hex('#FFFFFF') 
+                                bold: True
+                                
+                                font_style: 'H6'
+                                halign: 'left'
+
+                        #Power State
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: 1, 0.25
+                            MDLabel:
+                                text: 'Power State'
+                                color: utils.get_color_from_hex('#FFFFFF') 
+                                size_hint: 0.55, 1
+                                font_style: 'Subtitle1'
+                                halign: 'left'
+
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint: 0.45, 1
+
+                                AnchorLayout:
+                                    anchor_y: 'center'
+                                    anchor_x: 'center'   
+                                    spacing: 20  
+                                    MDSwitch:
+                                        size: "48dp", "24dp"
+                                        thumb_color: 0.97, 0.32, 0.4, 1
+
+                                    MDLabel:
+                                        text: 'Off'
+                                        color: utils.get_color_from_hex('#FFFFFF') 
+                                        font_style: 'Subtitle1'
+                                        halign: 'right'
+                                        bold: 'True'
+
+                        #Timer Sterilization room
+                        BoxLayout:
+                            orientation: 'horizontal'
+                            size_hint: 1, 0.25
+                            
+                            MDLabel:
+                                text: 'Timer'
+                                color: utils.get_color_from_hex('#FFFFFF') 
+                                size_hint: 0.55, 1
+                                font_style: 'Subtitle1'
+                                halign: 'left'
+
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                size_hint: 0.45, 1
+
+                                AnchorLayout:
+                                    anchor_y: 'center'
+                                    anchor_x: 'center'   
+                                    spacing: 20  
+                                    MDSwitch:
+                                        size: "48dp", "24dp"
+                                        thumb_color: 0.97, 0.32, 0.4, 1
+
+                                    MDLabel:
+                                        text: 'Off'
+                                        color: utils.get_color_from_hex('#FFFFFF') 
+                                        font_style: 'Subtitle1'
+                                        halign: 'right'
+                                        bold: 'True'
+                        
+                        #Additional space
+                        BoxLayout:
+                            orientation:'vertical'
+                            size_hint: 1, 0.3
+            #End of Room State Information
+        #End of Container
