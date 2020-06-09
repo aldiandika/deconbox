@@ -4,6 +4,8 @@ import time
 counter = 32
 ser = serial.Serial('COM4', 9600, timeout=1)
 
+global data
+
 while True:
 
     # ser.write(str('A').encode())

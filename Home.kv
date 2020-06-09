@@ -155,7 +155,9 @@
                                     orientation: 'vertical'
                                     canvas:
                                         Color:
-                                            rgba: 0.40, 0.82, 0.75, 1
+                                            # rgba: 0.40, 0.82, 0.75, 1
+                                            # rgba: 1, 0.82, 0.75, 1
+                                            rgba: root.dirtyBgCol
                                         RoundedRectangle:
                                             pos: self.pos
                                             size: self.size
@@ -164,6 +166,7 @@
                                     BoxLayout:
                                         orientation: 'vertical'
                                         size_hint: 1, 0.2
+                                        
 
                                     #Inside
                                     BoxLayout:
@@ -184,10 +187,10 @@
                                                 Color:
                                                     rgb: utils.get_color_from_hex('#FFFFFF')
                                                 RoundedRectangle:
-                                                    pos: self.center_x - 50, self.center_y - 35
-                                                    size: 100, 90
+                                                    pos: self.center_x - 40, self.center_y - 30
+                                                    size: 85, 80
                                                     radius: [(0,0), (0,0), (10,10), (10,10)]
-                                                    source: "assets/img/Subtract.png"
+                                                    source: root.dirtyIc
 
                                             MDLabel:
                                                 text: 'Ruang Kotor'
@@ -196,8 +199,9 @@
                                                 halign: 'center'
 
                                             MDLabel:
-                                                text: 'Kosong'
-                                                color: 0.4, 0.82, 0.75, 1
+                                                text: root.dirtyStateTxt
+                                                # color: 0.4, 0.82, 0.75, 1
+                                                color: root.dirtyBgCol
                                                 font_style: 'Subtitle1'
                                                 bold: True
                                                 halign: 'center'
@@ -211,9 +215,10 @@
                                 #Outside
                                 BoxLayout:
                                     orientation: 'vertical'
-                                    canvas:
+                                    canvas.before:
                                         Color:
-                                            rgba: 0.40, 0.82, 0.75, 1
+                                            # rgba: 0.40, 0.82, 0.75, 1
+                                            rgba: root.showerBgCol
                                         RoundedRectangle:
                                             pos: self.pos
                                             size: self.size
@@ -242,10 +247,10 @@
                                                 Color:
                                                     rgb: utils.get_color_from_hex('#FFFFFF')
                                                 RoundedRectangle:
-                                                    pos: self.center_x - 40, self.center_y - 40
-                                                    size: 80, 100
+                                                    pos: self.center_x - 40, self.center_y - 30
+                                                    size: 80, 80
                                                     radius: [(0,0), (0,0), (10,10), (10,10)]
-                                                    source: "assets/img/Shower Icon.png"
+                                                    source: root.showerIc
 
                                             MDLabel:
                                                 text: 'Ruang Shower'
@@ -254,8 +259,9 @@
                                                 halign: 'center'
 
                                             MDLabel:
-                                                text: 'Kosong'
-                                                color: 0.4, 0.82, 0.75, 1
+                                                text: root.showerStateTxt
+                                                # color: 0.4, 0.82, 0.75, 1
+                                                color: root.showerBgCol
                                                 font_style: 'Subtitle1'
                                                 bold: True
                                                 halign: 'center'
@@ -269,9 +275,10 @@
                                 #Outside
                                 BoxLayout:
                                     orientation: 'vertical'
-                                    canvas:
+                                    canvas.before:
                                         Color:
-                                            rgba: 0.40, 0.82, 0.75, 1
+                                            # rgba: 0.40, 0.82, 0.75, 1
+                                            rgba: root.cleanBgCol
                                         RoundedRectangle:
                                             pos: self.pos
                                             size: self.size
@@ -300,10 +307,10 @@
                                                 Color:
                                                     rgb: utils.get_color_from_hex('#FFFFFF')
                                                 RoundedRectangle:
-                                                    pos: self.center_x - 40, self.center_y - 40
-                                                    size: 80, 100
+                                                    pos: self.center_x - 35, self.center_y - 30
+                                                    size: 70, 80
                                                     radius: [(0,0), (0,0), (10,10), (10,10)]
-                                                    source: "assets/img/CleanIcon.png"
+                                                    source: root.cleanIc
 
                                             MDLabel:
                                                 text: 'Ruang Bersih'
@@ -312,8 +319,9 @@
                                                 halign: 'center'
 
                                             MDLabel:
-                                                text: 'Kosong'
-                                                color: 0.4, 0.82, 0.75, 1
+                                                text: root.cleanStateTxt
+                                                # color: 0.4, 0.82, 0.75, 1
+                                                color: root.cleanBgCol
                                                 font_style: 'Subtitle1'
                                                 bold: True
                                                 halign: 'center'

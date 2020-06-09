@@ -20,6 +20,10 @@ kivy.require('1.11.1')
 Window.size = (1020, 600)
 # Window.fullscreen = True
 
+stDirty = 1
+stShower = 0
+stClean = 1
+
 # Progress Bar
 
 
@@ -144,19 +148,64 @@ class ImageProgressBar(FloatLayout):
 
 
 class HomePage(BoxLayout):
-    pass
+    # State room
+    dirtyBgCol = ListProperty()
+    showerBgCol = ListProperty()
+    cleanBgCol = ListProperty()
+
+    dirtyStateTxt = StringProperty()
+    showerStateTxt = StringProperty()
+    cleanStateTxt = StringProperty()
+
+    dirtyIc = StringProperty()
+    showerIc = StringProperty()
+    cleanIc = StringProperty()
+
+    if stDirty == 0:
+        dirtyBgCol = ListProperty([0.40, 0.82, 0.75, 1])
+        dirtyStateTxt = 'Kosong'
+        dirtyIc = 'assets/img/Subtract.png'
+    else:
+        dirtyBgCol = ListProperty([0.969, 0.318, 0.396, 1])
+        dirtyStateTxt = 'Terisi'
+        dirtyIc = 'assets/img/SubtractRed.png'
+
+    if stShower == 0:
+        showerBgCol = ListProperty([0.40, 0.82, 0.75, 1])
+        showerStateTxt = 'Kosong'
+        showerIc = 'assets/img/Shower Icon.png'
+    else:
+        showerBgCol = ListProperty([0.969, 0.318, 0.396, 1])
+        showerStateTxt = 'Terisi'
+        showerIc = 'assets/img/ShowerIconRed.png'
+
+    if stClean == 0:
+        cleanBgCol = ListProperty([0.40, 0.82, 0.75, 1])
+        cleanStateTxt = 'Kosong'
+        cleanIc = 'assets/img/CleanIcon.png'
+    else:
+        cleanBgCol = ListProperty([0.969, 0.318, 0.396, 1])
+        cleanStateTxt = 'Terisi'
+        cleanIc = 'assets/img/CleanIconRed.png'
+
+    # End of State room
+
+# Navbar Date and time
 
 
 class NavBarDate(MDLabel):
     def update(self, *args):
-        self.text = time.strftime("%b %d %Y %H:%M:%S")
+        self.text = time.strftime("%b %d %Y  %H:%M:%S")
 
 
 class HomeApp(MDApp):
     def build(self):
         homePage = HomePage()
+
+        # Update date and time
         navBarDate = homePage.ids.navBarDate_txt
         Clock.schedule_interval(navBarDate.update, 1)
+
         self.load_kv('Home.kv')
         return homePage
 
