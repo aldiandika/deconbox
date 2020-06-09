@@ -45,6 +45,8 @@
         bold: True
         font_size: 24        
 
+<NavBarDate>:
+
 <HomePage>:
     BoxLayout:
         orientation: 'vertical'
@@ -55,11 +57,17 @@
             size_hint: 1, 0.02
             md_bg_color: utils.get_color_from_hex('#25262F')
 
-            MDLabel:
+            NavBarDate:
+                id: navBarDate_txt
                 text: '10:30:25  12-5-2020'
                 color: 1, 1, 1, 1
                 font_style: 'Caption'
                 halign: 'center'
+            # MDLabel:
+            #     text: '10:30:25  12-5-2020'
+            #     color: 1, 1, 1, 1
+            #     font_style: 'Caption'
+            #     halign: 'center'
 
         MDBoxLayout:
             orientation: 'horizontal'

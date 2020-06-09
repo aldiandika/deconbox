@@ -1,3 +1,4 @@
+import time
 from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.label import MDLabel
 from kivymd.app import MDApp
@@ -146,9 +147,18 @@ class HomePage(BoxLayout):
     pass
 
 
+class NavBarDate(MDLabel):
+    def update(self, *args):
+        self.text = time.strftime("%b %d %Y %H:%M:%S")
+
+
 class HomeApp(MDApp):
     def build(self):
-        return HomePage()
+        homePage = HomePage()
+        navBarDate = homePage.ids.navBarDate_txt
+        Clock.schedule_interval(navBarDate.update, 1)
+        self.load_kv('Home.kv')
+        return homePage
 
 
 if __name__ == '__main__':
