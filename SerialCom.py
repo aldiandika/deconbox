@@ -95,4 +95,28 @@ class SerialCommunication:
         except:
             pass
 
+    def getRoomConData(self):
+        try:
+            ser.write(str('e').encode())
+            dataSer = ser.readline()[:-2].decode()
+
+            while dataSer == '':
+                ser.write(str('e').encode())
+                dataSer = ser.readline()[:-2].decode()
+
+            if dataSer:
+                return dataSer
+        except:
+            pass
+
+    def setPowState(self, var):
+        if var == 'On':
+            st = 'p'
+        elif var == 'Off':
+            st = 'f'
+
+        try:
+            ser.write(str(st).encode())
+        except:
+            pass
     # Thread(target=startSerialData).start()

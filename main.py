@@ -151,6 +151,8 @@ class ImageProgressBar(FloatLayout):
 
 
 class HomePage(BoxLayout):
+    serialComObj = SerialCommunication()
+
     # State room var initialization
     stDirty = 1
     stShower = 1
@@ -169,12 +171,26 @@ class HomePage(BoxLayout):
     cleanIc = StringProperty()
     # End of State room var initialization
 
+    # Progress Bar Value Initialization
+    valCW = NumericProperty()
+    valHW = NumericProperty()
+    valFuel = NumericProperty()
+    # End of Progress Bar Value Initialization
+
+    # Flow Rate value
+    svalFlow = StringProperty()
+    # End of Flow Rate value
+
+    # Power State text
+    txtPowState = StringProperty('Off')
+    # End of Power State text
+
     # State Room Update
     def updateRoom(self, *args):
-        serialComObj = SerialCommunication()
-        self.stDirty = serialComObj.getStDirtyState()
-        self.stShower = serialComObj.getStShowerState()
-        self.stClean = serialComObj.getStCleanState()
+
+        self.stDirty = self.serialComObj.getStDirtyState()
+        self.stShower = self.serialComObj.getStShowerState()
+        self.stClean = self.serialComObj.getStCleanState()
 
         if self.stDirty == '1':
             self.dirtyBgCol = 0.40, 0.82, 0.75, 1
@@ -216,9 +232,30 @@ class HomePage(BoxLayout):
             self.cleanIc = 'assets/img/CleanIcon.png'
     # End of State Room Update
 
+    # Update ProgressBar
+    def updateProgress(self, *args):
+        resDataDict = self.serialComObj.getResourceData()
+        self.valCW = resDataDict['coldWater']
+        self.valHW = resDataDict['hotWater']
+        self.valFuel = resDataDict['fuel']
+    # End of Update ProgressBar
+
+    # Update Info Room Condition
+    def updateConRoom(self, *args):
+        valFlow = self.serialComObj.getRoomConData()
+        self.svalFlow = valFlow + ' L/m'
+    # End of Update Info Room Condition
+
+    def powSwitch_on(self, instance, value):
+        if value is True:
+            self.serialComObj.setPowState('On')
+            self.txtPowState = 'On'
+        else:
+            self.serialComObj.setPowState('Off')
+            self.txtPowState = 'Off'
+
+
 # Navbar Date and time
-
-
 class NavBarDate(MDLabel):
     def update(self, *args):
         self.text = time.strftime("%b %d %Y  %H:%M:%S")
@@ -228,10 +265,12 @@ class HomeApp(MDApp):
     def build(self):
         homePage = HomePage()
 
-        # Update date and time
+        # Update data UI threads
         navBarDate = homePage.ids.navBarDate_txt
         Clock.schedule_interval(navBarDate.update, 1)
         Clock.schedule_interval(homePage.updateRoom, 0.1)
+        Clock.schedule_interval(homePage.updateProgress, 1)
+        Clock.schedule_interval(homePage.updateConRoom, 0.5)
 
         self.load_kv('Home.kv')
         return homePage

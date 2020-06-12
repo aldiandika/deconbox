@@ -383,7 +383,7 @@
                                         source_progress: 'assets/progressbar/simple_tank/back.png'
                                         color_progress: 0.31, 0.482, 1, 1
                                         color_progress_background: 0.216, 0.243, 0.447, 1
-                                        value: 70
+                                        value: root.valCW
                                         min_pos: simple.start
                                         max_length: simple.length
                                         direction: 'bt'
@@ -429,7 +429,7 @@
                                         source_progress: 'assets/progressbar/simple_tank/back.png'
                                         color_progress: 0.97, 0.32, 0.4, 1
                                         color_progress_background: 0.216, 0.243, 0.447, 1
-                                        value: 70
+                                        value: root.valHW
                                         min_pos: simple.start
                                         max_length: simple.length
                                         direction: 'bt'
@@ -475,7 +475,7 @@
                                         source_progress: 'assets/progressbar/simple_tank/back.png'
                                         color_progress: 0.92, 0.49, 0.19, 1
                                         color_progress_background: 0.216, 0.243, 0.447, 1
-                                        value: 70
+                                        value: root.valFuel
                                         min_pos: simple.start
                                         max_length: simple.length
                                         direction: 'bt'
@@ -537,7 +537,7 @@
                                     halign: 'left'
 
                                 MDLabel:
-                                    text: '1 L/m'
+                                    text: root.svalFlow
                                     color: utils.get_color_from_hex('#FFFFFF') 
                                     size_hint: 0.4, 0.5
                                     font_style: 'Subtitle1'
@@ -603,9 +603,10 @@
                                     MDSwitch:
                                         size: "48dp", "24dp"
                                         thumb_color: 0.97, 0.32, 0.4, 1
+                                        on_active: root.powSwitch_on(self, self.active)
 
                                     MDLabel:
-                                        text: 'Off'
+                                        text: root.txtPowState
                                         color: utils.get_color_from_hex('#FFFFFF') 
                                         font_style: 'Subtitle1'
                                         halign: 'right'
