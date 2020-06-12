@@ -1,3 +1,5 @@
+import threading
+from SerialCom import SerialCommunication
 import time
 from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.label import MDLabel
@@ -20,9 +22,10 @@ kivy.require('1.11.1')
 Window.size = (1020, 600)
 # Window.fullscreen = True
 
-stDirty = 1
-stShower = 0
-stClean = 1
+
+# stDirty = 1
+# stShower = 0
+# stClean = 1
 
 # Progress Bar
 
@@ -148,7 +151,11 @@ class ImageProgressBar(FloatLayout):
 
 
 class HomePage(BoxLayout):
-    # State room
+    # State room var initialization
+    stDirty = 1
+    stShower = 1
+    stClean = 1
+
     dirtyBgCol = ListProperty()
     showerBgCol = ListProperty()
     cleanBgCol = ListProperty()
@@ -160,35 +167,54 @@ class HomePage(BoxLayout):
     dirtyIc = StringProperty()
     showerIc = StringProperty()
     cleanIc = StringProperty()
+    # End of State room var initialization
 
-    if stDirty == 0:
-        dirtyBgCol = ListProperty([0.40, 0.82, 0.75, 1])
-        dirtyStateTxt = 'Kosong'
-        dirtyIc = 'assets/img/Subtract.png'
-    else:
-        dirtyBgCol = ListProperty([0.969, 0.318, 0.396, 1])
-        dirtyStateTxt = 'Terisi'
-        dirtyIc = 'assets/img/SubtractRed.png'
+    # State Room Update
+    def updateRoom(self, *args):
+        serialComObj = SerialCommunication()
+        self.stDirty = serialComObj.getStDirtyState()
+        self.stShower = serialComObj.getStShowerState()
+        self.stClean = serialComObj.getStCleanState()
 
-    if stShower == 0:
-        showerBgCol = ListProperty([0.40, 0.82, 0.75, 1])
-        showerStateTxt = 'Kosong'
-        showerIc = 'assets/img/Shower Icon.png'
-    else:
-        showerBgCol = ListProperty([0.969, 0.318, 0.396, 1])
-        showerStateTxt = 'Terisi'
-        showerIc = 'assets/img/ShowerIconRed.png'
+        if self.stDirty == '1':
+            self.dirtyBgCol = 0.40, 0.82, 0.75, 1
+            self.dirtyStateTxt = 'Kosong'
+            self.dirtyIc = 'assets/img/Subtract.png'
+        elif self.stDirty == '0':
+            self.dirtyBgCol = 0.969, 0.318, 0.396, 1
+            self.dirtyStateTxt = 'Terisi'
+            self.dirtyIc = 'assets/img/SubtractRed.png'
+        else:
+            self.dirtyBgCol = 0.40, 0.82, 0.75, 1
+            self.dirtyStateTxt = 'Kosong'
+            self.dirtyIc = 'assets/img/Subtract.png'
 
-    if stClean == 0:
-        cleanBgCol = ListProperty([0.40, 0.82, 0.75, 1])
-        cleanStateTxt = 'Kosong'
-        cleanIc = 'assets/img/CleanIcon.png'
-    else:
-        cleanBgCol = ListProperty([0.969, 0.318, 0.396, 1])
-        cleanStateTxt = 'Terisi'
-        cleanIc = 'assets/img/CleanIconRed.png'
+        if self.stShower == '1':
+            self.showerBgCol = 0.40, 0.82, 0.75, 1
+            self.showerStateTxt = 'Kosong'
+            self.showerIc = 'assets/img/Shower Icon.png'
+        elif self.stShower == '0':
+            self.showerBgCol = 0.969, 0.318, 0.396, 1
+            self.showerStateTxt = 'Terisi'
+            self.showerIc = 'assets/img/ShowerIconRed.png'
+        else:
+            self.showerBgCol = 0.40, 0.82, 0.75, 1
+            self.showerStateTxt = 'Kosong'
+            self.showerIc = 'assets/img/Shower Icon.png'
 
-    # End of State room
+        if self.stClean == '1':
+            self.cleanBgCol = 0.40, 0.82, 0.75, 1
+            self.cleanStateTxt = 'Kosong'
+            self.cleanIc = 'assets/img/CleanIcon.png'
+        elif self.stClean == '0':
+            self.cleanBgCol = 0.969, 0.318, 0.396, 1
+            self.cleanStateTxt = 'Terisi'
+            self.cleanIc = 'assets/img/CleanIconRed.png'
+        else:
+            self.cleanBgCol = 0.40, 0.82, 0.75, 1
+            self.cleanStateTxt = 'Kosong'
+            self.cleanIc = 'assets/img/CleanIcon.png'
+    # End of State Room Update
 
 # Navbar Date and time
 
@@ -205,6 +231,7 @@ class HomeApp(MDApp):
         # Update date and time
         navBarDate = homePage.ids.navBarDate_txt
         Clock.schedule_interval(navBarDate.update, 1)
+        Clock.schedule_interval(homePage.updateRoom, 0.1)
 
         self.load_kv('Home.kv')
         return homePage

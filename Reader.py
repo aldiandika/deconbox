@@ -1,11 +1,23 @@
-import SerialCom
+from SerialCom import SerialCommunication
 import time
-import sys
+import threading
 
 
-class DataParser:
-    # while True:
-    dataSer = SerialCom.data
-    print(dataSer)
+class Reader:
 
-    # time.sleep(1)
+    serialComObj = SerialCommunication()
+    # x = 12
+
+    # dataResource = '12 15 17'
+
+    # cw, hw, fuel = dataResource.split()
+
+    # dictData = dict()
+    # dictData['coldWater'] = cw
+    # dictData['hotWater'] = hw
+    # dictData['fuel'] = fuel
+    # cwData = [dataRList[i] for i in dataRList]
+    # print(cw)
+
+    # for x in dictData:
+    #     print(dictData[x])

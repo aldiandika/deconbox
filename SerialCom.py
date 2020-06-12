@@ -1,23 +1,98 @@
 import serial
 import time
+from multiprocessing import Process
+from threading import Thread
 
-counter = 32
-ser = serial.Serial('COM4', 9600, timeout=1)
+from GlobalVars import GlobalVariables
 
-global data
+try:
+    ser = serial.Serial('COM4', 9600, timeout=1)
+except:
+    print('Cannot Open Serial Port')
 
-while True:
 
-    # ser.write(str('A').encode())
-    data = ser.readline().decode("utf-8")
+class SerialCommunication:
 
-    cek = str(data.split(' '))
-    # rKotor, rShower, rBersih = cek.split(',')
+    def __init__(self):
+        pass
 
-    # data = ser.read()
-    print(data)
+    # Get Dirty Room State Data
+    def getStDirtyState(self):
+        # print('Ok From Serial Communication 2')
+        try:
+            ser.write(str('a').encode())
+            dataSer = ser.readline()[:-2].decode()
 
-    # if data == "A":
-    #     print("data masuk")
+            while dataSer == '':
+                ser.write(str('a').encode())
+                dataSer = ser.readline()[:-2].decode()
 
-    # time.sleep(1)  # Delay for one tenth of a second
+            if dataSer:
+                # ser.close()
+                return dataSer
+        except:
+            pass
+
+        return 'no-data'
+
+    # Get Shower Room State Data
+    def getStShowerState(self):
+        # print('Ok From Serial Communication 2')
+        try:
+            ser.write(str('b').encode())
+            dataSer = ser.readline()[:-2].decode()
+
+            while dataSer == '':
+                ser.write(str('b').encode())
+                dataSer = ser.readline()[:-2].decode()
+
+            if dataSer:
+                # ser.close()
+                return dataSer
+        except:
+            pass
+
+        return 'no-data'
+
+    # Get Clean Room State Data
+    def getStCleanState(self):
+        # print('Ok From Serial Communication 2')
+        try:
+            ser.write(str('c').encode())
+            dataSer = ser.readline()[:-2].decode()
+
+            while dataSer == '':
+                ser.write(str('c').encode())
+                dataSer = ser.readline()[:-2].decode()
+
+            if dataSer:
+                # ser.close()
+                return dataSer
+        except:
+            pass
+
+        return 'no-data'
+
+    def getResourceData(self):
+        try:
+            ser.write(str('d').encode())
+            dataSer = ser.readline()[:-2].decode()
+
+            while dataSer == '':
+                ser.write(str('d').encode())
+                dataSer = ser.readline()[:-2].decode()
+
+            if dataSer:
+                dataResource = dataSer
+                cw, hw, fuel = dataResource.split()
+
+                dictData = dict()
+                dictData['coldWater'] = cw
+                dictData['hotWater'] = hw
+                dictData['fuel'] = fuel
+
+                return dictData
+        except:
+            pass
+
+    # Thread(target=startSerialData).start()
