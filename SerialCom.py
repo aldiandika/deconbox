@@ -6,7 +6,11 @@ from threading import Thread
 from GlobalVars import GlobalVariables
 
 try:
-    ser = serial.Serial('COM4', 9600, timeout=1)
+    # On Linux
+    ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+    
+    #On Windows
+    #ser = serial.Serial('COM4', 9600, timeout=1)
 except:
     print('Cannot Open Serial Port')
 

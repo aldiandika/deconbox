@@ -263,6 +263,7 @@ class NavBarDate(MDLabel):
 
 class HomeApp(MDApp):
     def build(self):
+        self.load_kv('Home.kv')
         homePage = HomePage()
 
         # Update data UI threads
@@ -272,7 +273,7 @@ class HomeApp(MDApp):
         Clock.schedule_interval(homePage.updateProgress, 1)
         Clock.schedule_interval(homePage.updateConRoom, 0.5)
 
-        self.load_kv('Home.kv')
+        
         return homePage
 
 

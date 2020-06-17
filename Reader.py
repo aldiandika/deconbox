@@ -8,9 +8,9 @@ class Reader:
     serialComObj = SerialCommunication()
 
     resDataDict = serialComObj.getResourceData()
-    print(serialComObj.getRoomConData() + ' L/m')
-    serialComObj.setPowState('Off')
-    # print(resDataDict)
+    #print(serialComObj.getRoomConData() + ' L/m')
+    #serialComObj.setPowState('Off')
+    print(resDataDict)
     # print(resDataDict['coldWater'])
     # print(resDataDict['hotWater'])
     # print(resDataDict['fuel'])
