@@ -15,6 +15,8 @@ from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 
+from subprocess import call
+
 import kivy
 kivy.require('1.11.1')
 
@@ -253,6 +255,9 @@ class HomePage(BoxLayout):
         else:
             self.serialComObj.setPowState('Off')
             self.txtPowState = 'Off'
+            
+    def TurnOff(self):
+        call("sudo shutdown -h now", shell=True)
 
 
 # Navbar Date and time

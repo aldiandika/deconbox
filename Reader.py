@@ -1,16 +1,17 @@
 from SerialCom import SerialCommunication
 import time
 import threading
-
+from subprocess import call
 
 class Reader:
+    
+    call("sudo shutdown -h now", shell=True)
+    #serialComObj = SerialCommunication()
 
-    serialComObj = SerialCommunication()
-
-    resDataDict = serialComObj.getResourceData()
+    #resDataDict = serialComObj.getResourceData()
     #print(serialComObj.getRoomConData() + ' L/m')
     #serialComObj.setPowState('Off')
-    print(resDataDict)
+    #print(resDataDict)
     # print(resDataDict['coldWater'])
     # print(resDataDict['hotWater'])
     # print(resDataDict['fuel'])
